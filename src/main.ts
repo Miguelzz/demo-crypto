@@ -6,12 +6,8 @@ import { createServer } from "http";
 import { Socket } from "socket.io";
 import { address } from "ip";
 import env, { publicPath } from "./env";
-import { cryptoConnect } from "./connections/mongo";
 import { intSocket$ } from "./connections/socket";
-
-import raffleRoutes from "./routes/raffle.route";
-import profileRoutes from "./routes/profile.route";
-import { urlMiddleware } from "./middlewares/auth.middleware";
+import cryptoRoutes from "./routes/crypto.route";
 
 export const app: Application = express();
 export const server = createServer(app);
@@ -23,12 +19,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(publicPath));
 
-app.use("/api/profile", profileRoutes);
-app.use("/api/raffle", raffleRoutes);
-app.all("/api/*", urlMiddleware);
+app.use("/api/crypto", cryptoRoutes);
 
 server.listen(env.port, async () => {
-  await cryptoConnect();
   intSocket$();
   console.log(
     `start: http://${address()}:${env.port} http://localhost:${env.port} ✌`

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="socket.io/socket.io.js"></script>
+    <title>Identity</title>
+    
+</head>
+<body>
+    <h1>Crypto</h1>
+    <script>
+        const token =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwMDQ2ZjBiZGM0ZmExMjU1ODFjZTBmYSIsImlhdCI6MTYxMDkwMzMwN30.aNPQxMAdaRyPiBv6OsZNWW79uK_I-TbbOiDirKG_g-U';
+
+        const socket = io();
+
+        //const socket = io.connect('http://debts.mercaky.com/', {
+        //    withCredentials: true,
+        //    extraHeaders: {
+        //        "my-custom-header": "abcd"
+        //    }
+        //});
+
+        socket.on('connect', () => {
+            console.log('Conectado al servidor')
+        });
+
+        socket.on('disconnect', function () {
+            console.log('Perdimos comunicación con el servidor');
+        });
+
+        socket.on('connected', data => {
+            console.log(data)
+            socket.emit('authorize', {
+                token
+            });
+        });
+
+        socket.on('user-info', data => {
+            console.log(data);
+        });
+
+        socket.on('me', data => {
+            console.log('me:', data);
+        });
+
+        socket.on('account', data => {
+            console.log('account:', data);
+        });
+    </script>
+
+    
+</body>
+</html>
